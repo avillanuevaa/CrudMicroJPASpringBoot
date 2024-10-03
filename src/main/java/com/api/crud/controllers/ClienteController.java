@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")
-@Tag(name = "Prueba API", description = "API de prueba para Swagger")
+@Tag(name = "Controlador de Cliente", description = "Endpoints entidad Cliente")
 
 public class ClienteController {
 

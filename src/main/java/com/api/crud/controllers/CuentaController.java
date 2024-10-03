@@ -5,6 +5,7 @@ import com.api.crud.models.ClienteModel;
 import com.api.crud.models.CuentaModel;
 import com.api.crud.services.ClienteService;
 import com.api.crud.services.CuentaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/cuentas")
+@Tag(name = "Controlador de Cuenta", description = "Endpoints entidad Cuenta")
+
 public class CuentaController {
 
 
