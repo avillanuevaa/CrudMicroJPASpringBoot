@@ -1,8 +1,7 @@
 package com.api.crud.services;
 
 
-import com.api.crud.models.ClienteModel;
-import com.api.crud.models.CuentaModel;
+import com.api.crud.models.Mysql.CuentaModel;
 import com.api.crud.repositories.ICuentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

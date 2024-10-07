@@ -1,8 +1,7 @@
 package com.api.crud.controllers;
 
-import com.api.crud.models.ClienteModel;
+import com.api.crud.models.Mysql.ClienteModel;
 import com.api.crud.services.ClienteService;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

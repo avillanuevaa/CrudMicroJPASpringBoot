@@ -1,9 +1,7 @@
 package com.api.crud.controllers;
 
 
-import com.api.crud.models.ClienteModel;
-import com.api.crud.models.CuentaModel;
-import com.api.crud.services.ClienteService;
+import com.api.crud.models.Mysql.CuentaModel;
 import com.api.crud.services.CuentaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

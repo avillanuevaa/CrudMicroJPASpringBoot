@@ -1,11 +1,10 @@
 package com.api.crud.services;
 
-import com.api.crud.models.ClienteModel;
+import com.api.crud.models.Mysql.ClienteModel;
 import com.api.crud.repositories.IClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
