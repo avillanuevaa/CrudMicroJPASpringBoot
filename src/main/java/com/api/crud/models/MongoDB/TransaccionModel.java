@@ -1,12 +1,9 @@
 package com.api.crud.models.MongoDB;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.Date;
-
 
 @Document(collection = "Transaccion")
 public class TransaccionModel {

@@ -3,9 +3,6 @@ package com.api.crud.repositories;
 
 import com.api.crud.models.MongoDB.TransaccionModel;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
-
-import java.util.List;
 
 
 public interface ITransaccionRepository extends MongoRepository<TransaccionModel,Integer> {

@@ -1,30 +1,18 @@
 package com.api.crud.services;
 
-
 import com.api.crud.models.MongoDB.TransaccionModel;
-import com.api.crud.models.Mysql.ClienteModel;
-import com.api.crud.models.Mysql.CuentaModel;
 import com.api.crud.repositories.ITransaccionRepository;
-import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 import org.bson.Document;
-
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
-
 
 @Service
 public class TransaccionService {

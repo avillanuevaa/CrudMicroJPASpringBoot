@@ -2,16 +2,12 @@ package com.api.crud.controllers;
 
 import com.api.crud.exceptions.ErrorResponse;
 import com.api.crud.models.MongoDB.TransaccionModel;
-import com.api.crud.models.Mysql.ClienteModel;
-import com.api.crud.services.ClienteService;
 import com.api.crud.services.TransaccionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,11 +23,6 @@ public class TransaccionController {
 1	DEPOSITO
 2	RETIRO
 3	TRANSFERENCIA
-* */
-   /* @GetMapping
-  /*  public ArrayList<TransaccionModel> getCLientes(){
-        return this.transaccionService.getTransaccion();
-    }
 */
 @GetMapping("/historial")
 public ResponseEntity<?> getTransacciones() { // Cambiar a ResponseEntity<?>
@@ -68,5 +59,4 @@ public ResponseEntity<?> getTransacciones() { // Cambiar a ResponseEntity<?>
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTX);
 
     }
-
 }
