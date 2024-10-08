@@ -17,6 +17,10 @@ import org.bson.Document;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -50,20 +54,16 @@ public class TransaccionService {
         return transacciones;
     }*/
 
-    public List<TransaccionModel> getTransacciones() {
+   /* public List<TransaccionModel> getTransacciones() {
         List<TransaccionModel> transacciones = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
         MongoCollection<org.bson.Document> collection = mongoDatabase.getCollection("Transaccion");
-        String id="";
+
         try (MongoCursor<org.bson.Document> cursor = collection.find().iterator()) {
             while (cursor.hasNext()) {
                 Document doc = (Document) cursor.next();
-                //TransaccionModel transaccion = new TransaccionModel();
-                 id="";
-                id=doc.toJson();//  getObjectId("_id");
-                System.out.println("el json es: "+id);
-                JsonNode jsonNode = objectMapper.readTree(id);
+                JsonNode jsonNode = objectMapper.readTree(doc.toJson());
                 // Convertimos la fecha a un objeto Date
                 long fechaMillis = jsonNode.get("fecha").get("$date").asLong();
                 Date fecha = new Date(fechaMillis);
@@ -75,8 +75,8 @@ public class TransaccionService {
                 transaccion.setMonto(jsonNode.get("monto").asDouble());
                 transaccion.setFecha(fecha);
                 transaccion.setNumeroCuenta(jsonNode.get("numeroCuenta").asText());
-
                 // Agregamos el objeto a la lista
+
                 transacciones.add(transaccion);
             }
         } catch (Exception e) {
@@ -84,16 +84,83 @@ public class TransaccionService {
         }
         return transacciones;
     }
+*/
+   public List<TransaccionModel> getTransacciones() {
+       ObjectMapper objectMapper = new ObjectMapper();
+       MongoCollection<Document> collection = mongoDatabase.getCollection("Transaccion");
 
+       try (MongoCursor<Document> cursor = collection.find().iterator()) {
+           // Convertimos el cursor en un Stream usando Stream.generate() y cortamos cuando no haya más datos
+           Stream<Document> documentStream = Stream.generate(cursor::next)
+                   .limit(collection.countDocuments()); // Establecemos el límite según la cantidad de documentos
+           return documentStream
+                   .map(doc -> {
+                       try {
+                           // Accedemos directamente a los campos del Document
+                           JsonNode jsonNode = objectMapper.readTree(doc.toJson());
+                           // Convertimos la fecha a un objeto Date
+                           long fechaMillis = jsonNode.get("fecha").get("$date").asLong();
+                           Date fecha = new Date(fechaMillis);
 
+                           // Mapeamos los campos al objeto TransaccionModel
+                           TransaccionModel transaccion = new TransaccionModel();
+                           transaccion.set_id(jsonNode.get("_id").asInt());
+                           transaccion.setTipopeid(jsonNode.get("tipopeid").asInt());
+                           transaccion.setMonto(jsonNode.get("monto").asDouble());
+                           transaccion.setFecha(fecha);
+                           transaccion.setNumeroCuenta(jsonNode.get("numeroCuenta").asText());
+
+                           return transaccion;
+
+                       } catch (Exception e) {
+                           e.printStackTrace();
+                           return null;
+                       }
+                   })
+                   .filter(transaccion -> transaccion != null) // Filtramos nulos
+                   .collect(Collectors.toList());
+       }
+   }
+
+    public Integer getMayorId() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        MongoCollection<Document> collection = mongoDatabase.getCollection("Transaccion");
+
+        try (MongoCursor<Document> cursor = collection.find().iterator()) {
+
+            // Convertimos el cursor en un Stream usando Stream.generate() y cortamos cuando no haya más datos
+            Stream<Document> documentStream = Stream.generate(cursor::next)
+                    .limit(collection.countDocuments()); // Establecemos el límite según la cantidad de documentos
+
+            // Usamos el Stream para encontrar el _id mayor
+            Optional<Integer> mayorId = documentStream
+                    .map(doc -> {
+                        try {
+                            // Accedemos directamente a los campos del Document
+                            JsonNode jsonNode = objectMapper.readTree(doc.toJson());
+                            return jsonNode.get("_id").asInt(); // Obtenemos el _id como entero
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    })
+                    .filter(id -> id != null) // Filtramos valores nulos
+                    .max(Comparator.naturalOrder()); // Obtenemos el mayor valor de _id
+
+            return mayorId.orElse(null); // Retornamos el resultado si existe
+        }
+    }
 
     public TransaccionModel saveTransaccion(TransaccionModel tx){
-
+        int idTxCorrelativo=0;
+        idTxCorrelativo=getMayorId()+1;
+        tx.set_id(idTxCorrelativo);
 
        /* Optional<TransaccionModel> existingIdTransaccion = transaccionRepository.findById(tx.getId());
         if (existingIdTransaccion.isPresent()) {
             throw new IllegalArgumentException("El ID de la transaccion ya esta registrado");
         }*/
+
         return transaccionRepository.save(tx);
     }
 
